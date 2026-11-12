@@ -1,34 +1,15 @@
 {
-  "name": "client",
+  "name": "pms",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "npm-run-all --parallel client server",
-    "client": "vite",
-    "server": "npm --prefix server run dev || node server/server.js",
-    "build": "vite build",
-    "lint": "oxlint",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "lucide-react": "^1.24.0",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
-    "react-router-dom": "^7.18.1",
-    "recharts": "^3.9.2"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "^4.3.2",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.3",
-    "autoprefixer": "^10.5.2",
-    "concurrently": "^10.0.3",
-    "npm-run-all": "^4.1.5",
-    "oxlint": "^1.71.0",
-    "postcss": "^8.5.19",
-    "tailwindcss": "^4.3.2",
-    "vite": "^8.1.1"
+    "dev": "node -e \"const {spawn}=require('child_process');const c=process.platform==='win32'?'npm.cmd':'npm';spawn(c,['--prefix','frontend','run','dev'],{stdio:'inherit',shell:true});spawn(c,['--prefix','backend','run','dev'],{stdio:'inherit',shell:true});\"",
+    "frontend": "npm --prefix frontend run dev",
+    "backend": "npm --prefix backend run dev",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint",
+    "preview": "npm --prefix frontend run preview",
+    "install:all": "npm --prefix frontend install && npm --prefix backend install"
   }
 }
