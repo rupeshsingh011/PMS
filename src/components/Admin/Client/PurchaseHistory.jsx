@@ -63,9 +63,8 @@ const PurchaseHistory = () => {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - Table (2/3) */}
-        <div className="lg:col-span-2 bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+      {/* Table Card */}
+      <div className="w-full bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col">
           
           {/* Table Toolbar */}
           <div className="p-5 border-b border-gray-100 flex flex-wrap items-center justify-between gap-4">
@@ -166,9 +165,6 @@ const PurchaseHistory = () => {
             </div>
           </div>
         </div>
-
-
-      </div>
     </div>
   );
 };

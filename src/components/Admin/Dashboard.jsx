@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Printer, Wrench, CreditCard, Bell,
   CheckCircle2, Clock, AlertCircle, ArrowRight,
@@ -50,8 +51,9 @@ const StatCard = ({ title, value, icon: Icon, iconColor, subtitle }) => (
 
 const QuickActionButton = ({ icon: Icon, label, onClick, colorClass }) => (
   <button
+    type="button"
     onClick={onClick}
-    className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gray-200 transition-all group"
+    className="flex flex-col items-center justify-center p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-gray-200 transition-all group cursor-pointer"
   >
     <Icon className={`w-8 h-8 mb-3 ${colorClass.replace('bg-', 'text-')} opacity-80 group-hover:opacity-100 transition-opacity`} />
     <span className="text-sm font-medium text-gray-700">{label}</span>
@@ -60,6 +62,8 @@ const QuickActionButton = ({ icon: Icon, label, onClick, colorClass }) => (
 
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="space-y-6">
 
@@ -90,11 +94,11 @@ const Dashboard = () => {
           Quick Actions
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <QuickActionButton icon={User} label="Add Client" colorClass="bg-blue-600 text-blue-600" />
-          <QuickActionButton icon={TrendingUp} label="Create Sale" colorClass="bg-emerald-600 text-emerald-600" />
-          <QuickActionButton icon={Printer} label="Register Printer" colorClass="bg-purple-600 text-purple-600" />
-          <QuickActionButton icon={AlertCircle} label="Raise Ticket" colorClass="bg-amber-500 text-amber-500" />
-          <QuickActionButton icon={Receipt} label="Generate Invoice" colorClass="bg-indigo-600 text-indigo-600" />
+          <QuickActionButton icon={User} label="Add Client" onClick={() => navigate('/admin/clients/add')} colorClass="bg-blue-600 text-blue-600" />
+          <QuickActionButton icon={TrendingUp} label="Create Sale" onClick={() => navigate('/admin/sales?tab=new')} colorClass="bg-emerald-600 text-emerald-600" />
+          <QuickActionButton icon={Printer} label="Register Printer" onClick={() => navigate('/admin/printers/add')} colorClass="bg-purple-600 text-purple-600" />
+          <QuickActionButton icon={AlertCircle} label="Raise Ticket" onClick={() => navigate('/admin/management/tickets/create')} colorClass="bg-amber-500 text-amber-500" />
+          <QuickActionButton icon={Receipt} label="Generate Invoice" onClick={() => navigate('/admin/sales?tab=invoice')} colorClass="bg-indigo-600 text-indigo-600" />
         </div>
       </div>
 

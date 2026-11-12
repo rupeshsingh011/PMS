@@ -68,12 +68,23 @@ const navigation = [
   { name: 'Settings', href: '/admin/settings', icon: Settings },
 ];
 
-const NavItem = ({ item, isActive, location, navigate, expandedMenu, setExpandedMenu, sidebarOpen, setSidebarOpen }) => {
+const isSubMenuRouteActive = (item, pathname) => {
+  if (!item.subItems) return false;
+  if (item.href && (pathname === item.href || pathname.startsWith(item.href + '/'))) {
+    return true;
+  }
+  return item.subItems.some((sub) => {
+    const subPath = sub.href.split('?')[0];
+    return pathname === subPath || pathname.startsWith(subPath + '/');
+  });
+};
+
+const NavItem = ({ item, isActive, location, navigate, expandedMenus, setExpandedMenus, sidebarOpen, setSidebarOpen }) => {
   const currentPath = location.pathname + location.search;
 
   const hasSubItems = !!item.subItems;
   const isMainActive = isActive || (hasSubItems && location.pathname.startsWith(item.href || item.subItems[0].href.split('?')[0]));
-  const isOpen = expandedMenu === item.name;
+  const isOpen = expandedMenus.includes(item.name);
 
   if (hasSubItems) {
     return (
@@ -81,7 +92,11 @@ const NavItem = ({ item, isActive, location, navigate, expandedMenu, setExpanded
         <button
           onClick={() => {
             if (!sidebarOpen) setSidebarOpen(true);
-            setExpandedMenu(isOpen ? null : item.name);
+            setExpandedMenus((prev) =>
+              prev.includes(item.name)
+                ? prev.filter((name) => name !== item.name)
+                : [...prev, item.name]
+            );
             if (!isOpen) {
               navigate(item.href || item.subItems[0].href);
             }
@@ -144,13 +159,13 @@ const AdminLayout = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 1024);
 
-  // Accordion state: only one menu expanded at a time
-  const [expandedMenu, setExpandedMenu] = useState(() => {
-    const activeItem = navigation.find(item => item.subItems && (location.pathname === item.href || location.pathname.startsWith(item.href + '/')));
-    return activeItem ? activeItem.name : null;
+  // Expanded sub-menus state: sub-menus stay open until manually closed
+  const [expandedMenus, setExpandedMenus] = useState(() => {
+    const activeItem = navigation.find(item => isSubMenuRouteActive(item, location.pathname));
+    return activeItem ? [activeItem.name] : [];
   });
 
-  // Automatically update expanded menu when route changes
+  // Update sidebar open state on window resize
   React.useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024) {
@@ -163,13 +178,11 @@ const AdminLayout = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Automatically update expanded menu when route changes
+  // Expand active route's sub-menu on route change without auto-closing any open sub-menus
   React.useEffect(() => {
-    const activeItem = navigation.find(item => item.subItems && (location.pathname === item.href || location.pathname.startsWith(item.href + '/')));
+    const activeItem = navigation.find(item => isSubMenuRouteActive(item, location.pathname));
     if (activeItem) {
-      setExpandedMenu(activeItem.name);
-    } else {
-      setExpandedMenu(null);
+      setExpandedMenus((prev) => (prev.includes(activeItem.name) ? prev : [...prev, activeItem.name]));
     }
   }, [location.pathname]);
 
@@ -222,8 +235,8 @@ const AdminLayout = () => {
                 isActive={location.pathname === item.href}
                 location={location}
                 navigate={navigate}
-                expandedMenu={expandedMenu}
-                setExpandedMenu={setExpandedMenu}
+                expandedMenus={expandedMenus}
+                setExpandedMenus={setExpandedMenus}
                 sidebarOpen={sidebarOpen}
                 setSidebarOpen={setSidebarOpen}
               />
