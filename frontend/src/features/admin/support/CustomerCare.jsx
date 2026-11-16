@@ -243,26 +243,28 @@ const Support247 = () => {
           <h3 className="font-semibold text-gray-800">Active Support Tickets</h3>
           <span className="text-xs bg-red-100 text-red-700 font-semibold px-3 py-1 rounded-full">{tickets.filter(t => t.status !== 'Resolved').length} Open</span>
         </div>
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-              {['Ticket ID', 'Issue', 'Client', 'Priority', 'Status', 'Assigned To', 'Created'].map(h => <th key={h} className="px-5 py-4 font-semibold">{h}</th>)}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {tickets.map(t => (
-              <tr key={t.id} className="hover:bg-gray-50/50 transition-colors">
-                <td className="px-5 py-4 font-mono text-xs text-blue-600 font-bold">{t.id}</td>
-                <td className="px-5 py-4 text-gray-900 text-sm font-medium">{t.issue}</td>
-                <td className="px-5 py-4 text-gray-500 text-sm">{t.client}</td>
-                <td className="px-5 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${priorityConfig[t.priority]}`}>{t.priority}</span></td>
-                <td className="px-5 py-4"><span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusConfig[t.status]}`}>{t.status}</span></td>
-                <td className="px-5 py-4 text-gray-500 text-sm">{t.assigned}</td>
-                <td className="px-5 py-4 text-gray-500 text-xs">{t.created}</td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                {['Ticket ID', 'Issue', 'Client', 'Priority', 'Status', 'Assigned To', 'Created'].map(h => <th key={h} className="px-5 py-4 font-semibold whitespace-nowrap">{h}</th>)}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {tickets.map(t => (
+                <tr key={t.id} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-5 py-4 font-mono text-xs text-blue-600 font-bold whitespace-nowrap">{t.id}</td>
+                  <td className="px-5 py-4 text-gray-900 text-sm font-medium whitespace-nowrap">{t.issue}</td>
+                  <td className="px-5 py-4 text-gray-500 text-sm whitespace-nowrap">{t.client}</td>
+                  <td className="px-5 py-4 whitespace-nowrap"><span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${priorityConfig[t.priority]}`}>{t.priority}</span></td>
+                  <td className="px-5 py-4 whitespace-nowrap"><span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusConfig[t.status]}`}>{t.status}</span></td>
+                  <td className="px-5 py-4 text-gray-500 text-sm whitespace-nowrap">{t.assigned}</td>
+                  <td className="px-5 py-4 text-gray-500 text-xs whitespace-nowrap">{t.created}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

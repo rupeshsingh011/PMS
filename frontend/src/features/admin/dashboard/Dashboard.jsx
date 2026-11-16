@@ -76,8 +76,13 @@ const Dashboard = () => {
           <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         </div>
         <div className="flex items-center gap-3">
-          <button className="relative p-2 text-gray-500 hover:bg-gray-50 rounded-full transition-colors">
-            <Bell className="w-5 h-5" />
+          <button 
+            onClick={() => navigate('/admin/notifications')}
+            className="relative p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors cursor-pointer group"
+            title="View Notifications"
+            aria-label="View notifications"
+          >
+            <Bell className="w-5 h-5 group-hover:scale-105 transition-transform" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
           </button>
           <div className="flex items-center gap-2 pl-3 border-l border-gray-200">

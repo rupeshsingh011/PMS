@@ -77,15 +77,10 @@ import InstallationDue from '../features/admin/notifications/InstallationDue';
 import TicketAssigned from '../features/admin/notifications/TicketAssigned';
 import TicketClosed from '../features/admin/notifications/TicketClosed';
 import AMCExpiry from '../features/admin/notifications/AMCExpiry';
-import WarrantyExpiry from '../features/admin/notifications/WarrantyExpiry';
-import PaymentDue from '../features/admin/notifications/PaymentDue';
-import InvoiceGenerated from '../features/admin/notifications/InvoiceGenerated';
-import NewClient from '../features/admin/notifications/NewClient';
-import SystemAlerts from '../features/admin/notifications/SystemAlerts';
 import AdminSettings from '../features/admin/settings/Settings';
 
 // Client Portal Features
-import ClientDashboard from '../features/admin/dashboard/Dashboard';
+import ClientDashboard from '../features/client/ClientDashboard';
 import MyProfile from '../features/client/MyProfile';
 import MyPrinters from '../features/client/MyPrinters';
 import ClientPurchaseHistory from '../features/client/PurchaseHistory';
@@ -107,6 +102,7 @@ const AppRoutes = () => (
       {/* Clients Module Routes */}
       <Route path="clients" element={<ClientList />} />
       <Route path="clients/add" element={<AddClient />} />
+      <Route path="clients/edit/:id" element={<EditClient />} />
       <Route path="clients/membership" element={<MembershipDetails />} />
       <Route path="clients/membership-plans" element={<MembershipPlans />} />
       <Route path="clients/history" element={<PurchaseHistory />} />
@@ -171,11 +167,6 @@ const AppRoutes = () => (
       <Route path="notifications/ticket-assigned" element={<TicketAssigned />} />
       <Route path="notifications/ticket-closed" element={<TicketClosed />} />
       <Route path="notifications/amc-expiry" element={<AMCExpiry />} />
-      <Route path="notifications/warranty-expiry" element={<WarrantyExpiry />} />
-      <Route path="notifications/payment-due" element={<PaymentDue />} />
-      <Route path="notifications/invoice-generated" element={<InvoiceGenerated />} />
-      <Route path="notifications/new-client" element={<NewClient />} />
-      <Route path="notifications/system-alerts" element={<SystemAlerts />} />
 
       <Route path="settings" element={<AdminSettings />} />
     </Route>
@@ -185,6 +176,7 @@ const AppRoutes = () => (
       <Route index element={<ClientDashboard />} />
       <Route path="profile" element={<MyProfile />} />
       <Route path="printers" element={<MyPrinters />} />
+      <Route path="buy-rent" element={<ClientPurchaseHistory />} />
       <Route path="purchases" element={<ClientPurchaseHistory />} />
       <Route path="invoices" element={<Invoices />} />
       <Route path="payments" element={<Payments />} />

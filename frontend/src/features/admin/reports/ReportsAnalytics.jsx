@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import {
   BarChart3, TrendingUp, Activity, Lock,
-  Download, Filter, Calendar, ArrowUpRight, ArrowDownRight,
-  FileBarChart, PieChart as PieChartIcon, LineChart as LineChartIcon, Eye
+  Download, ArrowUpRight, ArrowDownRight
 } from 'lucide-react';
 import {
   AreaChart, Area, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  Legend, PieChart, Pie, Cell, RadarChart, Radar, PolarGrid,
-  PolarAngleAxis
+  Legend, PieChart, Pie, Cell
 } from 'recharts';
 
 // ─── Shared Data ──────────────────────────────────────────────────────────────
@@ -94,38 +92,54 @@ const BusinessReports = () => {
         <StatCard label="Service Calls" value="369" change="+11%" up color="from-amber-500 to-amber-600" />
       </div>
 
+      {/* Top Performing Accounts */}
+      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+        <h3 className="font-semibold text-gray-800 text-sm mb-3">Top Enterprise Revenue Accounts</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {topClients.map((client, i) => (
+            <div key={i} className="p-3.5 rounded-xl bg-gray-50/70 border border-gray-100 space-y-1">
+              <span className="text-xs font-bold text-gray-900 truncate block">{client.name}</span>
+              <div className="text-sm font-black text-indigo-600">₹{client.revenue.toLocaleString('en-IN')}</div>
+              <span className="text-[11px] font-semibold text-emerald-600">{client.growth} YoY</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
 
 
       {/* Summary Table */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
         <div className="p-5 border-b border-gray-100"><h3 className="font-semibold text-gray-800">Monthly Business Summary</h3></div>
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-              {['Month', 'Revenue', 'Cost', 'Profit', 'Margin', 'Clients', 'Services'].map(h => <th key={h} className="px-5 py-4 font-semibold">{h}</th>)}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {monthly.map(m => (
-              <tr key={m.month} className="hover:bg-gray-50/50 transition-colors">
-                <td className="px-5 py-3.5 font-semibold text-gray-900">{m.month}</td>
-                <td className="px-5 py-3.5 text-blue-600 font-semibold">₹{m.revenue.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-3.5 text-red-500 font-semibold">₹{m.cost.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-3.5 text-emerald-600 font-bold">₹{m.profit.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-3.5">
-                  <div className="flex items-center gap-2">
-                    <div className="h-1.5 w-16 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${Math.round((m.profit / m.revenue) * 100)}%` }} />
-                    </div>
-                    <span className="text-sm font-bold text-indigo-600">{Math.round((m.profit / m.revenue) * 100)}%</span>
-                  </div>
-                </td>
-                <td className="px-5 py-3.5 text-gray-700 font-semibold">{m.clients}</td>
-                <td className="px-5 py-3.5 text-gray-700 font-semibold">{m.services}</td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                {['Month', 'Revenue', 'Cost', 'Profit', 'Margin', 'Clients', 'Services'].map(h => <th key={h} className="px-5 py-4 font-semibold whitespace-nowrap">{h}</th>)}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {monthly.map(m => (
+                <tr key={m.month} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-5 py-3.5 font-semibold text-gray-900 whitespace-nowrap">{m.month}</td>
+                  <td className="px-5 py-3.5 text-blue-600 font-semibold whitespace-nowrap">₹{m.revenue.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-3.5 text-red-500 font-semibold whitespace-nowrap">₹{m.cost.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-3.5 text-emerald-600 font-bold whitespace-nowrap">₹{m.profit.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-3.5 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <div className="h-1.5 w-16 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full bg-indigo-500 rounded-full" style={{ width: `${Math.round((m.profit / m.revenue) * 100)}%` }} />
+                      </div>
+                      <span className="text-sm font-bold text-indigo-600">{Math.round((m.profit / m.revenue) * 100)}%</span>
+                    </div>
+                  </td>
+                  <td className="px-5 py-3.5 text-gray-700 font-semibold whitespace-nowrap">{m.clients}</td>
+                  <td className="px-5 py-3.5 text-gray-700 font-semibold whitespace-nowrap">{m.services}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -321,34 +335,36 @@ const GrowthAnalysis = () => {
 
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="p-5 border-b border-gray-100"><h3 className="font-semibold text-gray-800">QoQ Summary</h3></div>
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-                {['Quarter', 'Revenue', 'Clients', 'Services', 'Growth'].map(h => <th key={h} className="px-4 py-3 font-semibold">{h}</th>)}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {qoq.map((q, i) => {
-                const prev = qoq[i - 1];
-                const growth = prev ? Math.round(((q.revenue - prev.revenue) / prev.revenue) * 100) : null;
-                return (
-                  <tr key={q.quarter} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-4 py-3 font-medium text-gray-900 text-sm">{q.quarter}</td>
-                    <td className="px-4 py-3 text-blue-600 font-semibold text-sm">₹{(q.revenue / 100000).toFixed(2)}L</td>
-                    <td className="px-4 py-3 text-gray-700 font-semibold text-sm">{q.clients}</td>
-                    <td className="px-4 py-3 text-gray-700 font-semibold text-sm">{q.services}</td>
-                    <td className="px-4 py-3">
-                      {growth !== null && (
-                        <span className={`text-xs font-bold ${growth > 0 ? 'text-green-600' : 'text-red-500'}`}>
-                          {growth > 0 ? '+' : ''}{growth}%
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                  {['Quarter', 'Revenue', 'Clients', 'Services', 'Growth'].map(h => <th key={h} className="px-4 py-3 font-semibold whitespace-nowrap">{h}</th>)}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {qoq.map((q, i) => {
+                  const prev = qoq[i - 1];
+                  const growth = prev ? Math.round(((q.revenue - prev.revenue) / prev.revenue) * 100) : null;
+                  return (
+                    <tr key={q.quarter} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="px-4 py-3 font-medium text-gray-900 text-sm whitespace-nowrap">{q.quarter}</td>
+                      <td className="px-4 py-3 text-blue-600 font-semibold text-sm whitespace-nowrap">₹{(q.revenue / 100000).toFixed(2)}L</td>
+                      <td className="px-4 py-3 text-gray-700 font-semibold text-sm whitespace-nowrap">{q.clients}</td>
+                      <td className="px-4 py-3 text-gray-700 font-semibold text-sm whitespace-nowrap">{q.services}</td>
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        {growth !== null && (
+                          <span className={`text-xs font-bold ${growth > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                            {growth > 0 ? '+' : ''}{growth}%
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -423,27 +439,29 @@ const PermissionReports = () => {
             <h3 className="font-semibold text-gray-800">Permission Audit Log</h3>
             <span className="text-xs text-gray-400">{auditLog.length} entries</span>
           </div>
-          <table className="w-full text-left">
-            <thead>
-              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-                {['User', 'Action', 'Module', 'Date', 'Performed By'].map(h => <th key={h} className="px-5 py-4 font-semibold">{h}</th>)}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {auditLog.map(a => (
-                <tr key={a.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-5 py-3.5">
-                    <div className="font-medium text-gray-900 text-sm">{a.user}</div>
-                    <div className="text-xs text-gray-400">{a.role}</div>
-                  </td>
-                  <td className="px-5 py-3.5 text-gray-700 text-sm">{a.action}</td>
-                  <td className="px-5 py-3.5"><span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-full">{a.module}</span></td>
-                  <td className="px-5 py-3.5 text-gray-500 text-xs">{a.date}</td>
-                  <td className="px-5 py-3.5 text-gray-500 text-sm">{a.by}</td>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                  {['User', 'Action', 'Module', 'Date', 'Performed By'].map(h => <th key={h} className="px-5 py-4 font-semibold whitespace-nowrap">{h}</th>)}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {auditLog.map(a => (
+                  <tr key={a.id} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="px-5 py-3.5 whitespace-nowrap">
+                      <div className="font-medium text-gray-900 text-sm">{a.user}</div>
+                      <div className="text-xs text-gray-400">{a.role}</div>
+                    </td>
+                    <td className="px-5 py-3.5 text-gray-700 text-sm whitespace-nowrap">{a.action}</td>
+                    <td className="px-5 py-3.5 whitespace-nowrap"><span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 text-xs font-semibold rounded-full">{a.module}</span></td>
+                    <td className="px-5 py-3.5 text-gray-500 text-xs whitespace-nowrap">{a.date}</td>
+                    <td className="px-5 py-3.5 text-gray-500 text-sm whitespace-nowrap">{a.by}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  MessageSquare, Search, Filter, AlertCircle, Clock, CheckCircle2, User 
+  MessageSquare, Search, Filter, User 
 } from 'lucide-react';
 import PageHeader from '../../../components/common/PageHeader';
 import DataTable from '../../../components/common/DataTable';

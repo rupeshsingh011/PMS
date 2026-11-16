@@ -101,8 +101,13 @@ const ClientList = () => {
             />
             <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
           </div>
-          <button className="relative p-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 shadow-sm">
-            <Bell className="w-5 h-5" />
+          <button 
+            onClick={() => navigate('/admin/notifications')}
+            className="relative p-2 bg-white border border-gray-200 rounded-lg text-gray-600 hover:text-indigo-600 hover:bg-gray-50 shadow-sm transition-colors cursor-pointer group"
+            title="View Notifications"
+            aria-label="View notifications"
+          >
+            <Bell className="w-5 h-5 group-hover:scale-105 transition-transform" />
             <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
           </button>
           <button

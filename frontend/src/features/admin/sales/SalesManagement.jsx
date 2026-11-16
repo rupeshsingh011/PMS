@@ -5,7 +5,7 @@ import {
   BarChart2, TrendingUp, Plus, Search, Filter, Download,
   CheckCircle, XCircle, AlertCircle, ArrowUpRight,
   Package, Calendar, Eye, Edit2, Trash2,
-  ChevronRight, Star, Printer
+  Star, Printer
 } from 'lucide-react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
@@ -185,33 +185,35 @@ const SalesRecord = () => {
         </div>
       </div>
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-              {['Sale ID', 'Client', 'Product', 'Qty', 'Amount', 'Status', 'Date', 'Actions'].map(h => <th key={h} className="px-5 py-4 font-semibold">{h}</th>)}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {filtered.map(r => (
-              <tr key={r.id} className="hover:bg-blue-50/30 transition-colors">
-                <td className="px-5 py-4 font-mono text-sm font-semibold text-blue-600">{r.id}</td>
-                <td className="px-5 py-4 font-medium text-gray-900">{r.client}</td>
-                <td className="px-5 py-4 text-gray-600 text-sm">{r.product}</td>
-                <td className="px-5 py-4 text-gray-600">{r.qty}</td>
-                <td className="px-5 py-4 font-semibold text-gray-900">₹{r.amount.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-4"><span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor[r.status]}`}>{r.status}</span></td>
-                <td className="px-5 py-4 text-gray-500 text-sm">{r.date}</td>
-                <td className="px-5 py-4">
-                  <div className="flex gap-2">
-                    <button className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"><Eye className="w-4 h-4" /></button>
-                    <button className="p-1.5 text-amber-600 hover:bg-amber-100 rounded-lg transition-colors"><Edit2 className="w-4 h-4" /></button>
-                    <button className="p-1.5 text-red-500 hover:bg-red-100 rounded-lg transition-colors"><Trash2 className="w-4 h-4" /></button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                {['Sale ID', 'Client', 'Product', 'Qty', 'Amount', 'Status', 'Date', 'Actions'].map(h => <th key={h} className="px-5 py-4 font-semibold whitespace-nowrap">{h}</th>)}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {filtered.map(r => (
+                <tr key={r.id} className="hover:bg-blue-50/30 transition-colors">
+                  <td className="px-5 py-4 font-mono text-sm font-semibold text-blue-600 whitespace-nowrap">{r.id}</td>
+                  <td className="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">{r.client}</td>
+                  <td className="px-5 py-4 text-gray-600 text-sm whitespace-nowrap">{r.product}</td>
+                  <td className="px-5 py-4 text-gray-600 whitespace-nowrap">{r.qty}</td>
+                  <td className="px-5 py-4 font-semibold text-gray-900 whitespace-nowrap">₹{r.amount.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-4 whitespace-nowrap"><span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor[r.status]}`}>{r.status}</span></td>
+                  <td className="px-5 py-4 text-gray-500 text-sm whitespace-nowrap">{r.date}</td>
+                  <td className="px-5 py-4 whitespace-nowrap">
+                    <div className="flex gap-2">
+                      <button className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"><Eye className="w-4 h-4" /></button>
+                      <button className="p-1.5 text-amber-600 hover:bg-amber-100 rounded-lg transition-colors"><Edit2 className="w-4 h-4" /></button>
+                      <button className="p-1.5 text-red-500 hover:bg-red-100 rounded-lg transition-colors"><Trash2 className="w-4 h-4" /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         {filtered.length === 0 && (
           <div className="text-center py-12 text-gray-400">
             <ShoppingCart className="w-10 h-10 mx-auto mb-2 opacity-30" />
@@ -254,33 +256,35 @@ const InvoiceGenerate = () => {
           <h3 className="font-semibold text-gray-800">All Invoices</h3>
           <button className="text-sm text-blue-600 font-semibold flex items-center gap-1 hover:underline"><Download className="w-4 h-4" /> Export All</button>
         </div>
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-              {['Invoice #', 'Client', 'Amount', 'Tax', 'Total', 'Status', 'Due Date', 'Actions'].map(h => <th key={h} className="px-5 py-4 font-semibold">{h}</th>)}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {invoices.map(inv => (
-              <tr key={inv.id} className="hover:bg-gray-50/50 transition-colors">
-                <td className="px-5 py-4 font-mono text-sm font-semibold text-blue-600">{inv.id}</td>
-                <td className="px-5 py-4 font-medium text-gray-900">{inv.client}</td>
-                <td className="px-5 py-4 text-gray-600">₹{inv.amount.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-4 text-gray-600">₹{inv.tax.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-4 font-semibold text-gray-900">₹{inv.total.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-4"><span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor[inv.status]}`}>{inv.status}</span></td>
-                <td className="px-5 py-4 text-gray-500 text-sm">{inv.due}</td>
-                <td className="px-5 py-4">
-                  <div className="flex gap-2">
-                    <button className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg"><Eye className="w-4 h-4" /></button>
-                    <button className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-lg"><Printer className="w-4 h-4" /></button>
-                    <button className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-lg"><Download className="w-4 h-4" /></button>
-                  </div>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                {['Invoice #', 'Client', 'Amount', 'Tax', 'Total', 'Status', 'Due Date', 'Actions'].map(h => <th key={h} className="px-5 py-4 font-semibold whitespace-nowrap">{h}</th>)}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {invoices.map(inv => (
+                <tr key={inv.id} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-5 py-4 font-mono text-sm font-semibold text-blue-600 whitespace-nowrap">{inv.id}</td>
+                  <td className="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">{inv.client}</td>
+                  <td className="px-5 py-4 text-gray-600 whitespace-nowrap">₹{inv.amount.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-4 text-gray-600 whitespace-nowrap">₹{inv.tax.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-4 font-semibold text-gray-900 whitespace-nowrap">₹{inv.total.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-4 whitespace-nowrap"><span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor[inv.status]}`}>{inv.status}</span></td>
+                  <td className="px-5 py-4 text-gray-500 text-sm whitespace-nowrap">{inv.due}</td>
+                  <td className="px-5 py-4 whitespace-nowrap">
+                    <div className="flex gap-2">
+                      <button className="p-1.5 text-blue-600 hover:bg-blue-100 rounded-lg"><Eye className="w-4 h-4" /></button>
+                      <button className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-lg"><Printer className="w-4 h-4" /></button>
+                      <button className="p-1.5 text-gray-600 hover:bg-gray-100 rounded-lg"><Download className="w-4 h-4" /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -377,26 +381,28 @@ const OrderHistoryTab = () => {
         ))}
       </div>
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <table className="w-full text-left">
-          <thead>
-            <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-              {['Order ID', 'Client', 'Items', 'Total', 'Status', 'Ordered', 'Delivered'].map(h => <th key={h} className="px-5 py-4 font-semibold">{h}</th>)}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {orderHistory.map(o => (
-              <tr key={o.id} className="hover:bg-gray-50/50 transition-colors">
-                <td className="px-5 py-4 font-mono text-sm font-semibold text-blue-600">{o.id}</td>
-                <td className="px-5 py-4 font-medium text-gray-900">{o.client}</td>
-                <td className="px-5 py-4 text-gray-600">{o.items} items</td>
-                <td className="px-5 py-4 font-semibold text-gray-900">₹{o.total.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-4"><span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor[o.status]}`}>{o.status}</span></td>
-                <td className="px-5 py-4 text-gray-500 text-sm">{o.ordered}</td>
-                <td className="px-5 py-4 text-gray-500 text-sm">{o.delivered}</td>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                {['Order ID', 'Client', 'Items', 'Total', 'Status', 'Ordered', 'Delivered'].map(h => <th key={h} className="px-5 py-4 font-semibold whitespace-nowrap">{h}</th>)}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {orderHistory.map(o => (
+                <tr key={o.id} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-5 py-4 font-mono text-sm font-semibold text-blue-600 whitespace-nowrap">{o.id}</td>
+                  <td className="px-5 py-4 font-medium text-gray-900 whitespace-nowrap">{o.client}</td>
+                  <td className="px-5 py-4 text-gray-600 whitespace-nowrap">{o.items} items</td>
+                  <td className="px-5 py-4 font-semibold text-gray-900 whitespace-nowrap">₹{o.total.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-4 whitespace-nowrap"><span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColor[o.status]}`}>{o.status}</span></td>
+                  <td className="px-5 py-4 text-gray-500 text-sm whitespace-nowrap">{o.ordered}</td>
+                  <td className="px-5 py-4 text-gray-500 text-sm whitespace-nowrap">{o.delivered}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -450,34 +456,36 @@ const SalesReport = () => (
         </div>
       </div>
     </div>
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 overflow-hidden">
       <h3 className="font-bold text-gray-800 mb-4">Client-wise Sales Summary</h3>
-      <table className="w-full text-left">
-        <thead>
-          <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-            {['Client', 'Orders', 'Total Sales', 'Status'].map(h => <th key={h} className="px-4 py-3 font-semibold">{h}</th>)}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100">
-          {[
-            { client: 'Acme Corp', orders: 12, total: 1240000, status: 'Active' },
-            { client: 'Globex Inc', orders: 8, total: 870000, status: 'Active' },
-            { client: 'Stark Industries', orders: 5, total: 520000, status: 'Active' },
-            { client: 'Wayne Enterprises', orders: 15, total: 2100000, status: 'Premium' },
-          ].map(r => (
-            <tr key={r.client} className="hover:bg-gray-50/50">
-              <td className="px-4 py-3 font-medium text-gray-900">{r.client}</td>
-              <td className="px-4 py-3 text-gray-600">{r.orders}</td>
-              <td className="px-4 py-3 font-semibold text-gray-900">₹{r.total.toLocaleString('en-IN')}</td>
-              <td className="px-4 py-3">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${r.status === 'Premium' ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'}`}>
-                  {r.status === 'Premium' && <Star className="w-3 h-3 inline mr-1" />}{r.status}
-                </span>
-              </td>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+              {['Client', 'Orders', 'Total Sales', 'Status'].map(h => <th key={h} className="px-4 py-3 font-semibold whitespace-nowrap">{h}</th>)}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {[
+              { client: 'Acme Corp', orders: 12, total: 1240000, status: 'Active' },
+              { client: 'Globex Inc', orders: 8, total: 870000, status: 'Active' },
+              { client: 'Stark Industries', orders: 5, total: 520000, status: 'Active' },
+              { client: 'Wayne Enterprises', orders: 15, total: 2100000, status: 'Premium' },
+            ].map(r => (
+              <tr key={r.client} className="hover:bg-gray-50/50">
+                <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{r.client}</td>
+                <td className="px-4 py-3 text-gray-600 whitespace-nowrap">{r.orders}</td>
+                <td className="px-4 py-3 font-semibold text-gray-900 whitespace-nowrap">₹{r.total.toLocaleString('en-IN')}</td>
+                <td className="px-4 py-3 whitespace-nowrap">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${r.status === 'Premium' ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'}`}>
+                    {r.status === 'Premium' && <Star className="w-3 h-3 inline mr-1" />}{r.status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 );
@@ -532,35 +540,37 @@ const MonthlyRevenue = () => (
     </div>
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="p-5 border-b border-gray-100"><h3 className="font-semibold text-gray-800">Month-wise Breakdown</h3></div>
-      <table className="w-full text-left">
-        <thead>
-          <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-            {['Month', 'Revenue', 'Target', 'Variance', 'Achievement'].map(h => <th key={h} className="px-5 py-4 font-semibold">{h}</th>)}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100">
-          {monthlyRevenue.map(m => {
-            const variance = m.revenue - m.target;
-            const achievement = Math.round((m.revenue / m.target) * 100);
-            return (
-              <tr key={m.month} className="hover:bg-gray-50/50 transition-colors">
-                <td className="px-5 py-4 font-semibold text-gray-900">{m.month}</td>
-                <td className="px-5 py-4 font-semibold text-gray-900">₹{m.revenue.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-4 text-gray-600">₹{m.target.toLocaleString('en-IN')}</td>
-                <td className={`px-5 py-4 font-semibold ${variance >= 0 ? 'text-green-600' : 'text-red-500'}`}>{variance >= 0 ? '+' : ''}₹{variance.toLocaleString('en-IN')}</td>
-                <td className="px-5 py-4">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-24 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full rounded-full bg-blue-500" style={{ width: `${Math.min(achievement, 100)}%` }} />
+      <div className="overflow-x-auto">
+        <table className="w-full text-left">
+          <thead>
+            <tr className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+              {['Month', 'Revenue', 'Target', 'Variance', 'Achievement'].map(h => <th key={h} className="px-5 py-4 font-semibold whitespace-nowrap">{h}</th>)}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {monthlyRevenue.map(m => {
+              const variance = m.revenue - m.target;
+              const achievement = Math.round((m.revenue / m.target) * 100);
+              return (
+                <tr key={m.month} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="px-5 py-4 font-semibold text-gray-900 whitespace-nowrap">{m.month}</td>
+                  <td className="px-5 py-4 font-semibold text-gray-900 whitespace-nowrap">₹{m.revenue.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-4 text-gray-600 whitespace-nowrap">₹{m.target.toLocaleString('en-IN')}</td>
+                  <td className={`px-5 py-4 font-semibold whitespace-nowrap ${variance >= 0 ? 'text-green-600' : 'text-red-500'}`}>{variance >= 0 ? '+' : ''}₹{variance.toLocaleString('en-IN')}</td>
+                  <td className="px-5 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <div className="h-2 w-24 bg-gray-100 rounded-full overflow-hidden">
+                        <div className="h-full rounded-full bg-blue-500" style={{ width: `${Math.min(achievement, 100)}%` }} />
+                      </div>
+                      <span className={`text-xs font-bold ${achievement >= 100 ? 'text-green-600' : 'text-gray-600'}`}>{achievement}%</span>
                     </div>
-                    <span className={`text-xs font-bold ${achievement >= 100 ? 'text-green-600' : 'text-gray-600'}`}>{achievement}%</span>
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 );
@@ -608,7 +618,7 @@ const SalesManagement = () => {
     if (tabFromUrl && tabFromUrl !== activeTab) {
       setActiveTab(tabFromUrl);
     }
-  }, [tabFromUrl]);
+  }, [tabFromUrl, activeTab]);
 
   const handleTabChange = (id) => {
     setActiveTab(id);

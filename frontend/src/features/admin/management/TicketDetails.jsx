@@ -41,7 +41,7 @@ const TicketDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('complaint');
-  const ticket = MOCK_TICKET;
+  const ticket = { ...MOCK_TICKET, id: id || MOCK_TICKET.id };
 
   return (
     <div className="space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700 h-full flex flex-col">

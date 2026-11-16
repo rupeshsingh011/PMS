@@ -24,11 +24,7 @@ const recentAlerts = [
   { id: 4, action: 'Ticket Resolved', details: 'Paper jam issue fixed at Acme Corp.', time: '3 hours ago', icon: CheckCircle2, color: 'text-emerald-600', bg: 'bg-emerald-50' },
 ];
 
-const notifications = [
-  { id: 1, text: 'Customer feedback received: 5/5 stars for Raj Kumar.', type: 'success', time: '30 mins ago' },
-  { id: 2, text: 'Low stock alert: Fuser units running low.', type: 'warning', time: '4 hours ago' },
-  { id: 3, text: 'System maintenance scheduled for tonight at 12 AM.', type: 'info', time: '1 day ago' },
-];
+
 
 // --- Components ---
 const StatCard = ({ title, value, icon: Icon, iconColor, subtitle }) => (
@@ -85,8 +81,13 @@ const ManagementDashboard = () => {
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <button className="relative p-2 text-gray-500 hover:bg-gray-50 rounded-full transition-colors">
-            <Bell className="w-5 h-5" />
+          <button 
+            onClick={() => navigate('/admin/notifications')}
+            className="relative p-2 text-gray-500 hover:text-indigo-600 hover:bg-indigo-50 rounded-full transition-colors cursor-pointer group"
+            title="View Notifications"
+            aria-label="View notifications"
+          >
+            <Bell className="w-5 h-5 group-hover:scale-105 transition-transform" />
             <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
           </button>
         </div>
@@ -122,6 +123,74 @@ const ManagementDashboard = () => {
           <StatCard title="Resolved Today" value="34" icon={CheckCircle} iconColor="text-emerald-500" />
           <StatCard title="Engineers on Field" value="12" icon={Users} iconColor="text-indigo-500" />
           <StatCard title="SLA Breaches" value="2" icon={Clock} iconColor="text-red-500" />
+        </div>
+      </div>
+
+      {/* Ticket Status Distribution & Recent Alerts */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Pie Chart */}
+        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 className="text-base font-bold text-gray-900 mb-1">Ticket Status Distribution</h3>
+            <p className="text-xs text-gray-500">Live breakdown of current active vs resolved tickets.</p>
+          </div>
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={ticketStatusData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={85}
+                  paddingAngle={4}
+                  dataKey="value"
+                >
+                  {ticketStatusData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend verticalAlign="bottom" height={36} iconType="circle" />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Live Operational Alerts */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm space-y-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <h3 className="text-base font-bold text-gray-900 mb-1">Live Operational Alerts</h3>
+              <p className="text-xs text-gray-500">Immediate dispatches, SLA warnings, and field updates.</p>
+            </div>
+            <button
+              onClick={() => navigate('/admin/notifications')}
+              className="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors"
+            >
+              View All
+            </button>
+          </div>
+
+          <div className="space-y-3">
+            {recentAlerts.map((alert) => {
+              const AlertIcon = alert.icon;
+              return (
+                <div key={alert.id} className="flex items-start gap-3 p-3.5 rounded-xl border border-gray-50 hover:bg-gray-50/60 transition-colors">
+                  <div className={`p-2.5 rounded-xl shrink-0 ${alert.bg}`}>
+                    <AlertIcon className={`w-4 h-4 ${alert.color}`} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold text-gray-900">{alert.action}</span>
+                      <span className="text-[11px] text-gray-400">{alert.time}</span>
+                    </div>
+                    <p className="text-xs text-gray-600 mt-0.5 truncate">{alert.details}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 

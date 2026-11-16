@@ -92,3 +92,9 @@ npm run backend
 - **Demo Client**: `client` / `password123`
 - **Health Check**: `GET /api/health`
 - **Login**: `POST /api/auth/login`
+
+## Responsive Design Policy
+
+All pages across the Admin and Client portals are built with mobile-first responsiveness (supporting mobile 320px–640px, tablet 768px–1024px, and desktop 1280px+).
+
+Whenever building or modifying pages, consult [RESPONSIVE_DESIGN_GUIDELINES.md](file:///c:/Users/Rup/OneDrive/Desktop/PMS/RESPONSIVE_DESIGN_GUIDELINES.md) for mandatory architectural standards, responsive table wrappers (`overflow-x-auto`), grid scaling rules, and mobile-safe modal patterns.

@@ -3,8 +3,8 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { logoutUser } from '../../services/authService';
 import {
   LayoutDashboard, Users, Printer, ShoppingCart,
-  HeadphonesIcon, Calculator, BarChart3, Bell,
-  Settings, LogOut, Menu, X, Search, ChevronDown, ChevronRight, Briefcase
+  Calculator, BarChart3, Bell,
+  Settings, LogOut, Menu, X, Search, ChevronDown, ChevronRight, Briefcase, ArrowLeft
 } from 'lucide-react';
 
 // Navigation configuration with sub-items
@@ -59,11 +59,6 @@ const navigation = [
       { name: 'Ticket Assigned', href: '/admin/notifications/ticket-assigned' },
       { name: 'Ticket Closed', href: '/admin/notifications/ticket-closed' },
       { name: 'AMC Expiry', href: '/admin/notifications/amc-expiry' },
-      { name: 'Warranty Expiry', href: '/admin/notifications/warranty-expiry' },
-      { name: 'Payment Due', href: '/admin/notifications/payment-due' },
-      { name: 'Invoice Generated', href: '/admin/notifications/invoice-generated' },
-      { name: 'New Client', href: '/admin/notifications/new-client' },
-      { name: 'System Alerts', href: '/admin/notifications/system-alerts' },
     ]
   },
   { name: 'Settings', href: '/admin/settings', icon: Settings },
@@ -102,13 +97,14 @@ const NavItem = ({ item, isActive, location, navigate, expandedMenus, setExpande
               navigate(item.href || item.subItems[0].href);
             }
           }}
-          className={`w-full flex items-center ${sidebarOpen ? 'justify-between px-4' : 'justify-center'} py-3 rounded-xl transition-all duration-200 group relative overflow-hidden ${isMainActive && !isOpen
+          title={!sidebarOpen ? item.name : undefined}
+          className={`w-full flex items-center ${sidebarOpen ? 'justify-between px-4' : 'justify-center px-0'} py-3 rounded-xl transition-all duration-200 group relative overflow-hidden ${isMainActive && !isOpen
             ? 'bg-blue-50 text-blue-700 font-semibold shadow-sm'
             : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium'
             }`}
         >
           {isMainActive && !isOpen && <div className="absolute left-0 top-0 bottom-0 w-1 bg-blue-600 rounded-r-md"></div>}
-          <div className="flex items-center gap-3">
+          <div className={`flex items-center ${sidebarOpen ? 'gap-3' : 'justify-center'}`}>
             <item.icon className={`w-5 h-5 shrink-0 transition-colors ${isMainActive ? 'text-blue-600' : 'text-gray-400 group-hover:text-blue-600'}`} />
             <span className={`whitespace-nowrap transition-all duration-300 ${sidebarOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 overflow-hidden'}`}>{item.name}</span>
           </div>
@@ -143,7 +139,8 @@ const NavItem = ({ item, isActive, location, navigate, expandedMenus, setExpande
   return (
     <Link
       to={item.href}
-      className={`flex items-center ${sidebarOpen ? 'gap-3 px-4' : 'justify-center'} py-3 mb-1 rounded-xl transition-all duration-200 group relative overflow-hidden ${isActive
+      title={!sidebarOpen ? item.name : undefined}
+      className={`flex items-center ${sidebarOpen ? 'gap-3 px-4' : 'justify-center px-0'} py-3 mb-1 rounded-xl transition-all duration-200 group relative overflow-hidden ${isActive
         ? 'bg-blue-50 text-blue-700 font-semibold shadow-sm'
         : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium'
         }`}
@@ -191,6 +188,14 @@ const AdminLayout = () => {
     e.preventDefault();
     logoutUser();
     navigate('/login');
+  };
+
+  const handleBack = () => {
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/admin');
+    }
   };
 
   return (
@@ -261,13 +266,26 @@ const AdminLayout = () => {
       <div className="flex-1 flex flex-col overflow-hidden w-full relative z-0">
 
         {/* Header */}
-        <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 h-20 flex items-center justify-between px-4 sm:px-6 lg:px-8 z-10 sticky top-0 shrink-0">
-          <div className="flex items-center gap-4">
+        <header className={`bg-white/80 backdrop-blur-md border-b border-gray-200 h-20 flex items-center justify-between transition-all duration-300 z-10 sticky top-0 shrink-0 ${
+          sidebarOpen ? 'px-4 sm:px-6 lg:px-8' : 'px-3 sm:px-4 lg:px-4'
+        }`}>
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 -ml-2 text-gray-500 hover:text-gray-700 rounded-lg hover:bg-gray-100"
+              className="p-2 -ml-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer"
+              title={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+              aria-label="Toggle navigation menu"
             >
               <Menu className="w-6 h-6" />
+            </button>
+
+            <button
+              onClick={handleBack}
+              className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all cursor-pointer group flex items-center justify-center"
+              title="Go Back"
+              aria-label="Go back to previous page"
+            >
+              <ArrowLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
             </button>
 
             <div className="hidden md:flex items-center bg-gray-100 rounded-full px-4 py-2 border border-gray-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-200 transition-all w-80">
@@ -281,9 +299,17 @@ const AdminLayout = () => {
           </div>
 
           <div className="flex items-center gap-4 sm:gap-6">
-            <button className="relative p-2 text-gray-400 hover:text-gray-600 transition-colors">
-              <Bell className="w-6 h-6" />
-              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></span>
+            <button
+              onClick={() => navigate('/admin/notifications')}
+              className="relative p-2.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all cursor-pointer group"
+              title="View Notifications"
+              aria-label="View notifications"
+            >
+              <Bell className="w-6 h-6 group-hover:scale-105 transition-transform" />
+              <span className="absolute top-2 right-2 flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500 border-2 border-white"></span>
+              </span>
             </button>
 
             <div className="h-8 w-px bg-gray-200 hidden sm:block"></div>
@@ -303,7 +329,13 @@ const AdminLayout = () => {
 
         {/* Main Page Content */}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-[#F8FAFC]">
-          <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
+          <div 
+            className={`w-full transition-all duration-300 ${
+              sidebarOpen 
+                ? 'max-w-7xl mx-auto p-4 sm:p-6 lg:p-8' 
+                : 'max-w-[1720px] mx-auto p-3 sm:p-4 lg:px-4 lg:py-6'
+            }`}
+          >
             <Outlet />
           </div>
         </main>
